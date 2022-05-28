@@ -17,7 +17,7 @@
         </div>
 
         <div class="px-2 bg-white text-md font-sourcesans">
-            Your seed phrase encrypts and unlocks access to all of your data across Skynet. <span class="font-black">You must not lose or share this secret phrase</span>. You will not be able to recover your account.
+            Your seed phrase encrypts and unlocks access to all of your data across Skynet. <span class="font-bold">You must not lose or share this secret phrase</span>. You will not be able to recover your account.
         </div>
 
         <div class="pt-2 px-2 bg-white text-right">

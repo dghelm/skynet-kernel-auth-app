@@ -91,7 +91,7 @@
         </div>
     {:else}
         <div class="mb-4">
-            <p class="text-palette-400">Skynet Kernel</p>
+            <p class="text-palette-400 font-sora">Skynet Kernel</p>
             <h2 class="text-xl font-semibold font-sora">You are authenticated.</h2>
         </div>
         <div>
