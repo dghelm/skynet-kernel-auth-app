@@ -26,7 +26,7 @@ module.exports = {
         },
         extend: {
             fontFamily: {
-                opensans: ['open_sansregular'],
+                sourcesans: ['source_sans'],
                 sora: ['soraregular'],
             },
         },
