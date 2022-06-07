@@ -2,7 +2,7 @@
     import Layout from '../components/Layout.svelte'
     import Link from '../components/Link.svelte'
     import { authUser, generateSeedPhrase, logOut } from '../lib/helpers'
-    import { validSeedPhrase } from '../lib/skynet'
+    import { validSeedPhrase } from 'libskynet'
     import { v1seed } from '../lib/stores'
     import { Info, Copy } from 'akar-icons-svelte'
 

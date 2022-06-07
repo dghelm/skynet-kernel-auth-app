@@ -1,12 +1,12 @@
 import {
     SEED_ENTROPY_WORDS,
-    dictionary,
     seedWordsToSeed,
     seedToChecksumWords,
-    validSeedPhrase,
 } from './skynet'
 
-import { v1seed } from '../lib/stores'
+import { dictionary, validSeedPhrase } from 'libskynet'
+
+import { v1seed, errors } from '../lib/stores'
 
 export const generateSeedPhrase = function () {
     // Get the random numbers for the seed phrase. Typically, you need to
@@ -20,7 +20,8 @@ export const generateSeedPhrase = function () {
     crypto.getRandomValues(randNums)
     // Consistency check to verify the above statement.
     if (dictionary.length !== 1024) {
-        setErrorText('ERROR: the dictionary is the wrong length!')
+        const errorText = 'ERROR: the dictionary is the wrong length!'
+        errors.update((errorList) => [...errorList, errorText])
         return
     }
     // Generate the seed phrase from the randNums.
@@ -32,13 +33,15 @@ export const generateSeedPhrase = function () {
     // Convert the seedWords to a seed.
     let [seed, err1] = seedWordsToSeed(seedWords)
     if (err1 !== null) {
-        setErrorText('ERROR: Unable to parse generated seed: ' + err1)
+        const errorText = 'ERROR: Unable to parse generated seed: ' + err1
+        errors.update((errorList) => [...errorList, errorText])
         return
     }
     // Compute the checksum.
     let [checksumOne, checksumTwo, err2] = seedToChecksumWords(seed)
     if (err2 !== null) {
-        setErrorText('ERROR: Unable to compute checksum: ' + err2)
+        const errorText = 'ERROR: Unable to compute checksum: ' + err2
+        errors.update((errorList) => [...errorList, errorText])
         return
     }
     // Assemble the final seed phrase and set the text field.
@@ -57,13 +60,15 @@ export const authUser = function (inputSeed) {
     var userSeed = inputSeed
 
     if (userSeed === null) {
-        setErrorText('ERROR: user seed field not found')
+        const errorText = 'ERROR: user seed field not found'
+        errors.update((errorList) => [...errorList, errorText])
         return
     }
     // Validate the seed.
     let [seed, errVSP] = validSeedPhrase(userSeed)
     if (errVSP !== null) {
-        setErrorText('Seed is not valid: ' + errVSP)
+        const errorText = 'Seed is not valid: ' + errVSP
+        errors.update((errorList) => [...errorList, errorText])
         return
     }
     // Take the seed and store it in localStorage.
@@ -86,9 +91,9 @@ export const authUser = function (inputSeed) {
             window.opener.postMessage({ kernelMethod: 'authCompleted' }, '*')
             window.close()
         } catch (errC) {
-            setErrorText(
-                'Unable to report that authentication suceeded: ' + errC,
-            )
+            const errorText =
+                'Unable to report that authentication suceeded: ' + errC
+            errors.update((errorList) => [...errorList, errorText])
         }
     } else {
         // location.reload()
@@ -114,15 +119,11 @@ export const logOut = function () {
             window.opener.postMessage({ kernelMethod: 'logOutSucces' }, '*')
             window.close()
         } catch (errC) {
-            setErrorText(
-                'Unable to report that authentication suceeded: ' + errC,
-            )
+            const errorText =
+                'Unable to report that authentication suceeded: ' + errC
+            errors.update((errorList) => [...errorList, errorText])
         }
     } else {
         // location.reload()
     }
-}
-
-var setErrorText = function (t) {
-    const errorText = t
 }
